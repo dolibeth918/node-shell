@@ -1,14 +1,14 @@
-var fs = require('fs');
+const fs = require('fs');
 let request = require('request');
 
-var filepath = __dirname;
+const filepath = __dirname;
 
 module.exports = {
-  pwd: function(done){
+  pwd: function(filename, done){
     let result = filepath;
     done(result);
   },
-  ls: function(done){
+  ls: function(filename, done){
     fs.readdir(filepath, function(err, files){
       if (err) throw err;
       let result = '';
@@ -20,8 +20,7 @@ module.exports = {
   },
   //need to write a function to process echo!
   echo: function(content, done) {
-    let result = content + '\n';
-    done(result);
+    done(content);
   },
   cat: function(filename, done) {
     fs.readFile(filename, function(err, data){
@@ -31,16 +30,14 @@ module.exports = {
     });
   },
   head: function(filename, done) {
-    let path = `./${filename}`;
-    fs.readFile(path, 'utf8', function(err, data){
+    fs.readFile(filename, 'utf8', function(err, data){
       if (err) throw err;
       let result = data.split('\n').slice(0, 5).join('\n')
       done(result);
     })
   },
   tail: function(filename, done) {
-    let path = `./${filename}`;
-    fs.readFile(path, 'utf8', function(err, data){
+    fs.readFile(filename, 'utf8', function(err, data){
       if (err) throw err;
       let result = data.split('\n').slice(-5).join('\n');
       done(result);
